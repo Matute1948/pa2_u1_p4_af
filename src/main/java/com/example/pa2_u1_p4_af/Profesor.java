@@ -2,6 +2,10 @@ package com.example.pa2_u1_p4_af;
 
 import java.time.LocalDateTime;
 
+import org.springframework.stereotype.Component;
+
+@Component //le estoy delegando el control al contenedor
+
 public class Profesor {
     private String nombre;
     private String apellido;
