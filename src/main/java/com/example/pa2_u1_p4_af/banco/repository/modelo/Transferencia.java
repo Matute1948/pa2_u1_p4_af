@@ -1,7 +1,6 @@
 package com.example.pa2_u1_p4_af.banco.repository.modelo;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Transferencia {

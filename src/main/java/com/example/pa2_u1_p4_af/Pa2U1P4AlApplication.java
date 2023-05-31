@@ -2,7 +2,6 @@ package com.example.pa2_u1_p4_af;
 
 import java.beans.Transient;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.pa2_u1_p4_af.banco.repository.modelo.Cuenta;
+import com.example.pa2_u1_p4_af.banco.repository.modelo.Transferencia;
 import com.example.pa2_u1_p4_af.banco.serrvice.CuentaService;
 import com.example.pa2_u1_p4_af.banco.serrvice.TransferenciaService;
 import com.example.pa2_u1_p4_af.repository.modelo.Estudiante;
@@ -59,6 +59,15 @@ public class Pa2U1P4AlApplication implements CommandLineRunner{
 		System.out.println("Saldo Destino");
 		System.out.println(this.cuentaService.buscarPorNumero("7890").getSaldo());
 
+		//Mostrar estado de Cuenta
+
+		System.out.println("Estado de Cuenta");
+		for(Transferencia trans : this.transferenciaService.estadoCuenta()){
+			System.out.println(trans);
+		}
+
 	}
+
+	
 
 }

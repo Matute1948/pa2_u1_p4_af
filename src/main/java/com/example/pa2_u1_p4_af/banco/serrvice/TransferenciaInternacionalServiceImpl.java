@@ -4,23 +4,18 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.pa2_u1_p4_af.banco.repository.CuentaRepository;
 import com.example.pa2_u1_p4_af.banco.repository.TransferenciaRepository;
 import com.example.pa2_u1_p4_af.banco.repository.modelo.Cuenta;
 import com.example.pa2_u1_p4_af.banco.repository.modelo.Transferencia;
-@Service
-public class TransferenciaServiceImpl implements TransferenciaService {
-    @Autowired
-    private TransferenciaRepository transferenciaRepository;
-    @Autowired
+// se realiza una anotacion para identificar cada servi
+@Service("internacional")
+public class TransferenciaInternacionalServiceImpl implements TransferenciaService{
+    
     private CuentaRepository cuentaRepository;
-    @Autowired
-    @Qualifier("internacional")
-    private MontoDebitarNacionalServiceImpl montoDebitarNacionalServiceImpl;
+    private TransferenciaRepository transferenciaRepository;
 
     @Override
     public void guardar(Transferencia transferencia) {
@@ -44,21 +39,21 @@ public class TransferenciaServiceImpl implements TransferenciaService {
 
     @Override
     public void realizar(String numeroCtaOrigen, String numeroCtaDestino, BigDecimal monto) {
-       // Historia de usuario (Sin tener nada tecnico)
+        // Historia de usuario (Sin tener nada tecnico)
         //1.- Consultar la cuenta de origen por el numero 
         
         Cuenta ctaOrigen = this.cuentaRepository.seleccionar(numeroCtaOrigen);
 
+        BigDecimal comision = monto.multiply(new BigDecimal(10)).divide(new BigDecimal(100));
+        BigDecimal montoDebitar = monto.add(comision);
 
         //2.- Consultar el saldo de la cuenta origen 
 
         BigDecimal saldoOrigen = ctaOrigen.getSaldo();
 
-        BigDecimal montoDebitar = this.montoDebitarNacionalServiceImpl.calcular(monto);
-
         //3.- Consultar si el saldo es suficiente 
 
-        if (montoDebitar.compareTo(saldoOrigen) <= 0 ){
+        if (monto.compareTo(saldoOrigen) <= 0 ){
             
             //5.- Si si es suficiente ir al paso 6
 
@@ -105,6 +100,7 @@ public class TransferenciaServiceImpl implements TransferenciaService {
             //4.- Si no es suficiente imprimir mensaje de no hay saldo 
             System.out.println("Saldo no disponible, su saldo es: " + saldoOrigen);
         }
+        
     }
 
     @Override
