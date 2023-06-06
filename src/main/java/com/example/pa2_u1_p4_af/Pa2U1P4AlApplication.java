@@ -1,27 +1,31 @@
 package com.example.pa2_u1_p4_af;
-
-import java.beans.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.example.pa2_u1_p4_af.banco.repository.modelo.Cuenta;
+import com.example.pa2_u1_p4_af.banco.repository.modelo.Cajero;
+import com.example.pa2_u1_p4_af.banco.repository.modelo.Presidente;
 import com.example.pa2_u1_p4_af.banco.repository.modelo.Transferencia;
-import com.example.pa2_u1_p4_af.banco.serrvice.CuentaService;
+import com.example.pa2_u1_p4_af.banco.serrvice.CargaSistemaService;
+
 import com.example.pa2_u1_p4_af.banco.serrvice.TransferenciaService;
-import com.example.pa2_u1_p4_af.repository.modelo.Estudiante;
-import com.example.pa2_u1_p4_af.serrvice.EstudianteServices;
 
 @SpringBootApplication
 public class Pa2U1P4AlApplication implements CommandLineRunner{
+	
 	@Autowired
-	private CuentaService cuentaService;
-
+	private Cajero cajero;
+	@Autowired
+	private Cajero cajero1;
+	@Autowired
+	private Presidente presidente;
+	@Autowired
+	private Presidente presidente1;
+	@Autowired
+	private CargaSistemaService cargaSistemaService;
 	@Autowired
 	private TransferenciaService transferenciaService;
 	
@@ -29,45 +33,37 @@ public class Pa2U1P4AlApplication implements CommandLineRunner{
 		SpringApplication.run(Pa2U1P4AlApplication.class, args);
 	}
 
+
 	@Override
 	public void run(String... args) throws Exception {
-		
-		Cuenta cuenta1 = new Cuenta();
-		cuenta1.setCedulaPropietario("1234");
-		cuenta1.setFechaApertura(LocalDateTime.now());
-		cuenta1.setNumero("5678");
-		cuenta1.setSaldo(new BigDecimal(200));
-		cuenta1.setTipo("A");
-
-		this.cuentaService.guardar(cuenta1);
-		this.cuentaService.buscarPorNumero("5678");
-
-		Cuenta cuenta2 = new Cuenta();
-		cuenta2.setCedulaPropietario("8987");
-		cuenta2.setFechaApertura(LocalDateTime.now());
-		cuenta2.setNumero("7890");
-		cuenta2.setSaldo(new BigDecimal(100));
-		cuenta2.setTipo("A");
-
-		this.cuentaService.guardar(cuenta2);
-
-		this.transferenciaService.realizar("5678", "7890", new BigDecimal(10));
-
-		System.out.println("Saldo Origen");
-		
-		System.out.println(this.cuentaService.buscarPorNumero("5678").getSaldo());
-		System.out.println("Saldo Destino");
-		System.out.println(this.cuentaService.buscarPorNumero("7890").getSaldo());
-
-		//Mostrar estado de Cuenta
-
-		System.out.println("Estado de Cuenta");
-		for(Transferencia trans : this.transferenciaService.estadoCuenta()){
-			System.out.println(trans);
-		}
-
-	}
-
+		// TODO Auto-generated method stub
+		System.out.println("Hola");
 	
+		this.cajero.setNombre("Andres");
+		this.cajero.setApellido("Lugmaña");
+		this.cajero.setSalario(new BigDecimal(1000));
 
+		this.cajero1.setApellido("Pineda");
+		System.out.println(this.cajero);
+		System.out.println(this.cajero1.getApellido());
+
+		this.presidente.setApellido("Porras");
+		this.presidente.setNombre("Andres");
+		this.presidente.setCedula("123");
+		this.presidente1.setApellido("Taco");
+
+		System.out.println(this.presidente);
+		System.out.println(this.presidente1);
+
+		System.out.println("******Segunda parte del taller*******");
+		this.cargaSistemaService.cargar();
+		Transferencia trans = new Transferencia();
+		trans.setCuentaDestino(null);
+		trans.setCuentaOrigen(null);
+		trans.setFecha(LocalDateTime.now());
+		trans.setMonto(new BigDecimal(100));
+		trans.setNumero("12345");
+		this.transferenciaService.guardar(trans);
+		
+	}
 }

@@ -1,11 +1,8 @@
-package com.example.pa2_u1_p4_af.banco.repository.modelo;
-
+package com.example.pa2_u1_p4_af.banco.repository;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Repository;
-
-import com.example.pa2_u1_p4_af.banco.repository.CuentaRepository;
+import com.example.pa2_u1_p4_af.banco.repository.modelo.Cuenta;
 @Repository
 public class CuentaRepositoryImpl implements CuentaRepository{
 

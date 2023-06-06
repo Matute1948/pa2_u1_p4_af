@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.pa2_u1_p4_af.banco.repository.CuentaRepository;
 import com.example.pa2_u1_p4_af.banco.repository.TransferenciaRepository;
 import com.example.pa2_u1_p4_af.banco.repository.modelo.Cuenta;
+import com.example.pa2_u1_p4_af.banco.repository.modelo.Impuesto;
 import com.example.pa2_u1_p4_af.banco.repository.modelo.Transferencia;
 @Service
 public class TransferenciaServiceImpl implements TransferenciaService {
@@ -20,11 +21,16 @@ public class TransferenciaServiceImpl implements TransferenciaService {
     private CuentaRepository cuentaRepository;
     @Autowired
     @Qualifier("internacional")
-    private MontoDebitarNacionalServiceImpl montoDebitarNacionalServiceImpl;
+    private MontoDebitarService montoDebitarService;
+
+    @Autowired
+    private Impuesto impuesto;
 
     @Override
     public void guardar(Transferencia transferencia) {
+        System.out.println("Se va a realizar con el iva de");
         this.transferenciaRepository.insertar(transferencia);
+        System.out.println(impuesto.getIva());
     }
 
     @Override
@@ -49,12 +55,11 @@ public class TransferenciaServiceImpl implements TransferenciaService {
         
         Cuenta ctaOrigen = this.cuentaRepository.seleccionar(numeroCtaOrigen);
 
-
         //2.- Consultar el saldo de la cuenta origen 
 
         BigDecimal saldoOrigen = ctaOrigen.getSaldo();
 
-        BigDecimal montoDebitar = this.montoDebitarNacionalServiceImpl.calcular(monto);
+        BigDecimal montoDebitar = this.montoDebitarService.calcular(monto);
 
         //3.- Consultar si el saldo es suficiente 
 
